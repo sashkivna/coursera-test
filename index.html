@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="myFirstApp">
 <head>
-    <meta charset="UTF-8">
-    <title>Hello</title>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+    <script src="app.js"></script>
+    <title>My first AngularJS App</title>
 </head>
 <body>
-<h1>Hello students blablabla</h1>
+<h1>Text please comma-separated items u r usually eat for lunch</h1>
+<h3>We do NOT consider and empty item, i.e., , , as an item towards to the count</h3>
+<div ng-controller="MyFirstController">
+    <input ng-style= "borderState" type="text" ng-model="name">
+    <button ng-click="checkTheLunch()">Check if too match</button>
+    </br>
+    <div ng-style= "state">{{status}}
+    </div>
+</div>
 </body>
 </html>
