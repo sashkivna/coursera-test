@@ -1,20 +1,43 @@
 <!DOCTYPE html>
-<html ng-app="myFirstApp">
+<html ng-app='ControllerAsApp'>
 <head>
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
     <script src="app.js"></script>
-    <title>My first AngularJS App</title>
+    <link rel="stylesheet" href="styles.css">
+    <title>Custom Service</title>
 </head>
 <body>
-<h1>Text please comma-separated items u r usually eat for lunch</h1>
-<h3>We do NOT consider and empty item, i.e., , , as an item towards to the count</h3>
-<div ng-controller="MyFirstController">
-    <input ng-style= "borderState" type="text" ng-model="name">
-    <button ng-click="checkTheLunch()">Check if too match</button>
-    </br>
-    <div ng-style= "state">{{status}}
-    </div>
+<h1>"Check off" shopping List application</h1>
+
+<div class = "lists">
+<div id="list1" ng-controller='ShoppingListController1 as list1'>
+    <h3>To Buy</h3>
+    <input type="text" ng-model="list1.itemName" placeholder="item name">
+    <input type="text" ng-model="list1.itemQuantity" placeholder="quantity">
+    <button ng-click="list1.addItem();">Add Item</button>
+    <div ng-if="list1.items.length === 0"> {{list1.state}}</div>
+    <ol>
+        <li ng-repeat="item in list1.items">
+            Buy {{ item.quantity }} {{ item.name }}
+            <button ng-click="list1.removeItem($index);">Bought</button>
+        </li>
+    </ol>
+</div>
+
+
+<div id="list2" ng-controller='ShoppingListController2 as list2'>
+    <h3>Already Bought</h3>
+    <div ng-if="list2.items.length === 0"> {{list2.state}}</div>
+
+    <ol>
+        <li ng-repeat="item in list2.items">
+            Bought {{ item.quantity }} {{ item.name }}
+            <button ng-click="list2.removeItem($index);">Remove Item</button>
+        </li>
+    </ol>
+</div>
 </div>
 </body>
 </html>
+

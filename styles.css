@@ -1,0 +1,11 @@
+body {
+    font-size: 1.2em;
+
+}
+.lists {
+    display: flex !important;
+    justify-content: space-around !important;
+}
+h1 {
+    text-align: center;
+}
