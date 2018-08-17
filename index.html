@@ -48,7 +48,7 @@
     <ul>
         <li ng-repeat="description in menu.description.menu_items ">
             <!--(<a href="" ng-click="menu.getMenu();">{{ category.dishDescription }}</a>)-->
-          Inside dish number {{ description["id"] }} we have {{ description["description"] }} <br>
+          {{$index+1}}. Inside dish number {{ description["id"] }} we have {{ description["description"] }} <br>
             <button>Narrow It Down For Me!</button>
         </li>
     </ul>
