@@ -1,11 +1,14 @@
 body {
     font-size: 1.2em;
+}
+#list1, #list2 {
+    float: left;
+}
+#list2 {
+    margin-left: 40px;
+}
 
-}
-.lists {
-    display: flex !important;
-    justify-content: space-around !important;
-}
-h1 {
-    text-align: center;
+.error {
+    color: red;
+    font-weight: bold;
 }

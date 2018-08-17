@@ -1,43 +1,58 @@
+<!--
+    <!DOCTYPE html>
+    <html ng-app='ShoppingListDirectiveApp'>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+        <script src="app.js"></script>
+        <link rel="stylesheet" href="styles.css">
+        <title>Directives with Isolate Scope and '&'</title>
+    </head>
+    <body>
+    <h1>Directives with Isolate Scope and '&'</h1>
+
+    &lt;!&ndash; LIST #1 - unlimited items &ndash;&gt;
+    <div id="list" ng-controller='ShoppingListController as list'>
+        <input type="text" ng-model="list.itemName" placeholder="item name">
+        <input type="text" ng-model="list.itemQuantity" placeholder="quantity">
+        <button ng-click="list.addItem();">Add Item</button>
+        <span>{{ list.lastRemoved }}</span>
+
+        <shopping-list
+                items="list.items"
+                title="{{list.title}}"
+                bad-remove="list.removeItem"
+                on-remove="list.removeItem(index)"></shopping-list>
+
+    </div>
+
+    </body>
+    </html>-->
+
 <!DOCTYPE html>
-<html ng-app='ControllerAsApp'>
+<html ng-app='MenuCategoriesApp'>
 <head>
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
     <script src="app.js"></script>
     <link rel="stylesheet" href="styles.css">
-    <title>Custom Service</title>
+    <title>Using $http Service</title>
 </head>
 <body>
-<h1>"Check off" shopping List application</h1>
+<h1>Search of the menu item descriptions using the restaurant server REST API</h1>
 
-<div class = "lists">
-<div id="list1" ng-controller='ShoppingListController1 as list1'>
-    <h3>To Buy</h3>
-    <input type="text" ng-model="list1.itemName" placeholder="item name">
-    <input type="text" ng-model="list1.itemQuantity" placeholder="quantity">
-    <button ng-click="list1.addItem();">Add Item</button>
-    <div ng-if="list1.items.length === 0"> {{list1.state}}</div>
-    <ol>
-        <li ng-repeat="item in list1.items">
-            Buy {{ item.quantity }} {{ item.name }}
-            <button ng-click="list1.removeItem($index);">Bought</button>
+<div ng-controller='MenuCategoriesController as menu'>
+    <h3>List of Menu Descriptions</h3>
+    <input type="text" ng-model = "searched">
+    <button>Search for Matches</button>
+    <ul>
+        <li ng-repeat="description in menu.description.menu_items ">
+            <!--(<a href="" ng-click="menu.getMenu();">{{ category.dishDescription }}</a>)-->
+          Inside dish number {{ description["id"] }} we have {{ description["description"] }} <br>
+            <button>Narrow It Down For Me!</button>
         </li>
-    </ol>
+    </ul>
 </div>
 
-
-<div id="list2" ng-controller='ShoppingListController2 as list2'>
-    <h3>Already Bought</h3>
-    <div ng-if="list2.items.length === 0"> {{list2.state}}</div>
-
-    <ol>
-        <li ng-repeat="item in list2.items">
-            Bought {{ item.quantity }} {{ item.name }}
-            <button ng-click="list2.removeItem($index);">Remove Item</button>
-        </li>
-    </ol>
-</div>
-</div>
 </body>
 </html>
-
