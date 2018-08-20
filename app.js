@@ -119,17 +119,54 @@
     angular.module('MenuCategoriesApp', [])
         .controller('MenuCategoriesController', MenuCategoriesController)
         .service('MenuCategoriesService', MenuCategoriesService)
-        .constant('ApiBasePath', "https://davids-restaurant.herokuapp.com");
+        .constant('ApiBasePath', "https://davids-restaurant.herokuapp.com")
+        .directive('shoppingList', ShoppingListDirective);
+
+
+    function ShoppingListDirective() {
+        var ddo = {
+            templateUrl: 'shoppingList.html',
+            scope: {
+                items: '<',
+                myTitle: '@title',
+                badRemove: '=',
+                onRemove: '&'
+            },
+            controller: ShoppingListDirectiveController,
+            controllerAs: 'list',
+            bindToController: true
+        };
+
+        return ddo;
+    }
+
+
+    function ShoppingListDirectiveController() {
+        var menu = this;
+
+        menu.cookiesInList = function () {
+            for (var i = 0; i < menu.items.length; i++) {
+                var name = menu.items[i].name;
+                if (name.toLowerCase().indexOf("cookie") !== -1) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+    }
+
 
 
     MenuCategoriesController.$inject = ['MenuCategoriesService'];
     function MenuCategoriesController(MenuCategoriesService) {
         var menu = this;
-
+        var menuMenu;
         var promise = MenuCategoriesService.getMenu();
 
         promise.then(function (response) {
             menu.description = response.data;
+            menuMenu = menu.description;
         })
             .catch(function (error) {
                 console.log("Something went terribly wrong.");
@@ -145,6 +182,7 @@
                     console.log(error);
                 })
         };
+
 
     }
 
