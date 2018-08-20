@@ -1,53 +1,25 @@
-<!--
-    <!DOCTYPE html>
-    <html ng-app='ShoppingListDirectiveApp'>
-    <head>
-        <meta charset="utf-8">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
-        <script src="app.js"></script>
-        <link rel="stylesheet" href="styles.css">
-        <title>Directives with Isolate Scope and '&'</title>
-    </head>
-    <body>
-    <h1>Directives with Isolate Scope and '&'</h1>
-
-    &lt;!&ndash; LIST #1 - unlimited items &ndash;&gt;
-    <div id="list" ng-controller='ShoppingListController as list'>
-        <input type="text" ng-model="list.itemName" placeholder="item name">
-        <input type="text" ng-model="list.itemQuantity" placeholder="quantity">
-        <button ng-click="list.addItem();">Add Item</button>
-        <span>{{ list.lastRemoved }}</span>
-
-        <shopping-list
-                items="list.items"
-                title="{{list.title}}"
-                bad-remove="list.removeItem"
-                on-remove="list.removeItem(index)"></shopping-list>
-
-    </div>
-
-    </body>
-    </html>-->
-
-<!DOCTYPE html>
-<html ng-app='MenuCategoriesApp'>
+<!doctype html>
+<html lang="en" ng-app="NarrowItDownApp">
 <head>
-    <meta charset="utf-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
-    <script src="app.js"></script>
+    <title>Narrow Down Your Menu Choice</title>
     <link rel="stylesheet" href="styles.css">
-    <title>Using $http Service</title>
+
 </head>
 <body>
-<h1>Search of the menu item descriptions using the restaurant server REST API</h1>
+<h1>Narrow Down Your Chinese Menu Choice</h1>
+<div ng-controller="NarrowItDownController as ctrl">
+    <form class="searchParam">
+        <div>
+            <input type="text" placeholder="search term"
+                   ng-model="ctrl.searchTerm">
+        </div>
+        <button ng-click="ctrl.narrowIt()">Narrow It Down For Me!</button>
+    </form>
 
-<div ng-controller='MenuCategoriesController as menu'>
-    <h3>List of Menu Descriptions</h3>
-    <input type="text" ng-model = "searched">
-    <button>Search for Matches</button>
-<shopping-list></shopping-list>
-    <span>{{ menu.lastRemoved }}</span>
+    <found-items found="ctrl.items" on-remove="ctrl.removeItem(index)"></found-items>
+
 </div>
-
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

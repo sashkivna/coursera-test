@@ -1,208 +1,90 @@
-/*
-(function () {
+(function() {
     'use strict';
+    angular
+        .module('NarrowItDownApp', [])
+        .controller('NarrowItDownController', NarrowItDownController)
+        .service('MenuSearchService', MenuSearchService)
+        .directive('foundItems', FoundItemsDirective)
+        .factory('MenuSearchFactory', MenuSearchFactory)
+        .constant('ApiBasePath', "https://davids-restaurant.herokuapp.com");
 
-    angular.module('ShoppingListDirectiveApp', [])
-        .controller('ShoppingListController', ShoppingListController)
-        .factory('ShoppingListFactory', ShoppingListFactory)
-        .directive('shoppingList', ShoppingListDirective);
 
-
-    function ShoppingListDirective() {
+    function FoundItemsDirective() {
         var ddo = {
-            templateUrl: 'shoppingList.html',
+            templateUrl: 'foundItems.html',
             scope: {
-                items: '<',
-                myTitle: '@title',
+                found: '<',
                 onRemove: '&'
             },
-            controller: ShoppingListDirectiveController,
+            controller: FoundItemsDirectiveController,
             controllerAs: 'list',
             bindToController: true
         };
-
         return ddo;
     }
 
-
-    function ShoppingListDirectiveController() {
+    function FoundItemsDirectiveController() {
         var list = this;
 
-        list.cookiesInList = function () {
-            for (var i = 0; i < list.items.length; i++) {
-                var name = list.items[i].name;
-                if (name.toLowerCase().indexOf("cookie") !== -1) {
-                    return true;
-                }
+        list.isEmpty = function() {
+            return list.found != undefined && list.found.length === 0;
+        }
+    }
+
+    NarrowItDownController.$inject = ['MenuSearchService'];
+    function NarrowItDownController(MenuSearchService) {
+        var ndController = this;
+
+        ndController.searchTerm = "";
+
+        ndController.narrowIt = function() {
+            if (ndController.searchTerm === "") {
+                ndController.items = [];
+                return;
             }
+            var promise = MenuSearchService.getMatchedMenuItems(ndController.searchTerm);
+            promise.then(function(response) {
+                ndController.items = response;
+            })
+                .catch(function(error) {
+                    console.log("Error:", error);
+                });
+        };
 
-            return false;
+        ndController.removeItem = function(index) {
+            ndController.items.splice(index, 1);
         };
     }
 
-
-    ShoppingListController.$inject = ['ShoppingListFactory'];
-    function ShoppingListController(ShoppingListFactory) {
-        var list = this;
-
-        // Use factory to create new shopping list service
-        var shoppingList = ShoppingListFactory();
-
-        list.items = shoppingList.getItems();
-        var origTitle = "Shopping List #1";
-        list.title = origTitle + " (" + list.items.length + " items )";
-
-        list.itemName = "";
-        list.itemQuantity = "";
-
-        list.addItem = function () {
-            shoppingList.addItem(list.itemName, list.itemQuantity);
-            list.title = origTitle + " (" + list.items.length + " items )";
-        };
-
-        list.removeItem = function (itemIndex) {
-            console.log("'this' is: ", this);
-            this.lastRemoved = "Last item removed was " + this.items[itemIndex].name;
-            shoppingList.removeItem(itemIndex);
-            this.title = origTitle + " (" + list.items.length + " items )";
-        };
-    }
-
-
-// If not specified, maxItems assumed unlimited
-    function ShoppingListService(maxItems) {
+    MenuSearchService.$inject = ['$http', 'ApiBasePath'];
+    function MenuSearchService($http, ApiBasePath) {
         var service = this;
 
-        // List of shopping items
-        var items = [];
+        service.getMatchedMenuItems = function(searchTerm) {
+            return $http({
+                method: 'GET',
+                url: (ApiBasePath + '/menu_items.json')
+            }).then(function (result) {
+                var items = result.data.menu_items;
+                var foundItems = [];
 
-        service.addItem = function (itemName, quantity) {
-            if ((maxItems === undefined) ||
-                (maxItems !== undefined) && (items.length < maxItems)) {
-                var item = {
-                    name: itemName,
-                    quantity: quantity
-                };
-                items.push(item);
-            }
-            else {
-                throw new Error("Max items (" + maxItems + ") reached.");
-            }
-        };
-
-        service.removeItem = function (itemIndex) {
-            items.splice(itemIndex, 1);
-        };
-
-        service.getItems = function () {
-            return items;
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].description.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0) {
+                        foundItems.push(items[i]);
+                    }
+                }
+                return foundItems;
+            });
         };
     }
 
 
-    function ShoppingListFactory() {
-        var factory = function (maxItems) {
-            return new ShoppingListService(maxItems);
+    function MenuSearchFactory() {
+        var factory = function () {
+            return new MenuSearchService();
         };
 
         return factory;
-    }
-
-})();
-
-
-//Z?m5R\mu*/
-
-(function () {
-    'use strict';
-
-    angular.module('MenuCategoriesApp', [])
-        .controller('MenuCategoriesController', MenuCategoriesController)
-        .service('MenuCategoriesService', MenuCategoriesService)
-        .constant('ApiBasePath', "https://davids-restaurant.herokuapp.com")
-        .directive('shoppingList', ShoppingListDirective);
-
-
-    function ShoppingListDirective() {
-        var ddo = {
-            templateUrl: 'shoppingList.html',
-            scope: {
-                items: '<',
-                myTitle: '@title',
-                badRemove: '=',
-                onRemove: '&'
-            },
-            controller: ShoppingListDirectiveController,
-            controllerAs: 'list',
-            bindToController: true
-        };
-
-        return ddo;
-    }
-
-
-    function ShoppingListDirectiveController() {
-        var menu = this;
-
-        menu.cookiesInList = function () {
-            for (var i = 0; i < menu.items.length; i++) {
-                var name = menu.items[i].name;
-                if (name.toLowerCase().indexOf("cookie") !== -1) {
-                    return true;
-                }
-            }
-
-            return false;
-        };
-    }
-
-
-
-    MenuCategoriesController.$inject = ['MenuCategoriesService'];
-    function MenuCategoriesController(MenuCategoriesService) {
-        var menu = this;
-        var menuMenu;
-        var promise = MenuCategoriesService.getMenu();
-
-        promise.then(function (response) {
-            menu.description = response.data;
-            menuMenu = menu.description;
-        })
-            .catch(function (error) {
-                console.log("Something went terribly wrong.");
-            });
-
-        menu.logMenuItems = function () {
-            var promise = MenuCategoriesService.getMenu();
-
-            promise.then(function (response) {
-                console.log( response.data);
-            })
-                .catch(function (error) {
-                    console.log(error);
-                })
-        };
-
-
-    }
-
-
-    MenuCategoriesService.$inject = ['$http', 'ApiBasePath'];
-    function MenuCategoriesService($http, ApiBasePath) {
-        var service = this;
-
-        service.getMenu = function () {
-            var response = $http({
-                method: "GET",
-                url: (ApiBasePath + "/menu_items.json"),
-             /*   params: {
-                    description: description
-                }*/
-            });
-            console.log(response);
-            return response;
-        }
-
     }
 
 })();
