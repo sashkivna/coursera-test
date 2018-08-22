@@ -1,20 +1,35 @@
 <!DOCTYPE html>
-<html ng-app="myFirstApp">
+<html ng-app="MenuApp">
 <head>
     <meta charset="utf-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
-    <script src="app.js"></script>
-    <title>My first AngularJS App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Menu Application</title>
 </head>
 <body>
-<h1>Text please comma-separated items u r usually eat for lunch</h1>
-<h3>We do NOT consider and empty item, i.e., , , as an item towards to the count</h3>
-<div ng-controller="MyFirstController">
-    <input ng-style= "borderState" type="text" ng-model="name">
-    <button ng-click="checkTheLunch()">Check if too match</button>
-    </br>
-    <div ng-style= "state">{{status}}
-    </div>
-</div>
+<ui-view></ui-view>
+<loading-spinner></loading-spinner>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js"></script>
+
+<script src="src/menuApp/menuapp.module.js"></script>
+<script src="src/data/data.module.js"></script>
+
+<script src="src/menuApp/router.js"></script>
+
+<script src="src/menuApp/menuCategories.controller.js"></script>
+<script src="src/menuApp/categoryEntries.controller.js"></script>
+<script src="src/data/menudata.service.js"></script>
+
+<script src="src/categories/categories.module.js"></script>
+<script src="src/categories/categories.component.js"></script>
+
+<script src="src/items/items.module.js"></script>
+<script src="src/items/items.component.js"></script>
+
+
 </body>
 </html>
+

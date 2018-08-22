@@ -1,0 +1,7 @@
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a ui-sref="home" ui-sref-active="active">Home</a></li>
+    <li class="breadcrumb-item"><a ui-sref="categories" ui-sref-active="active">Categories</a></li>
+    <li class="breadcrumb-item"><a ui-sref="items(shortName)" ui-sref-active="active"> {{ category.info.name }}</a></li>
+</ol>
+
+<items category-info="category.info" category-items="category.items"></items>

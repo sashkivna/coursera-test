@@ -1,0 +1,26 @@
+<h2>Category: {{ $ctrl.categoryInfo.name }}</h2>
+<div class="row" ng-repeat="item in $ctrl.categoryItems">
+
+    <div class="row">
+        <div class="col-md-8">
+            <h4>
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                {{ item.name }}
+            </h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            {{ item.description }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 text-justify"><em>Price ( small / large ):</em></div>
+        <div class="col-md-2 text-right"><strong>{{ item.price_small | currency:"$"}}</strong></div>
+        <div class="col-md-1 text-center">/</div>
+        <div class="col-md-2 text-left"><strong>{{ item.price_large | currency:"$"}}</strong></div>
+    </div>
+
+</div>
